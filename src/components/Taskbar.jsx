@@ -8,8 +8,8 @@ export default class TaskBar extends Component {
     render() {
         return (
             <div id="taskbar">
-                <button id="pathfind">Find Path</button>
-                <button id="setstart" onClick={this.props.onSelectStartq}>Set Start</button>
+                <button id="pathfind" onClick={this.props.onFindPath}>Find Path</button>
+                <button id="setstart" onClick={this.props.onSelectStart}>Set Start</button>
                 <button id="settarget" onClick={this.props.onSelectTarget}>Set Target</button>
             </div>
         )

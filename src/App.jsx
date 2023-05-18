@@ -11,8 +11,7 @@ class App extends Component {
 
     this.state = {
       // 0 means the start node is being selected, 1 means target node
-      nodeSelector: 0
-
+      nodeSelector: 0,
     }
   }
   handleSelectTarget = (e) => {
@@ -27,7 +26,9 @@ class App extends Component {
       nodeSelector: 0
     })
   }
+  handleFindPath = (e) => {
 
+  }
   render() {
     return (
       <div>

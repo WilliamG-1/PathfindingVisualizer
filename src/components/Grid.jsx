@@ -30,33 +30,13 @@ export default class Grid extends Component {
 
         this.state = {
             nodeGrid: [],
-            startNode: new Node(),
-            targetNode: new Node(),
-            choosingNode: 0 // 0 represents that a click will choose the start node, 1 meanas a click on a cell chooses the target node
+            startNode: new ANode(0, 0, true, 'discoverable'),
+            targetNode: new ANode(0, 0, true, 'discoverable'),
         }
         this.createGrid(20, 20)
-        this.colorAllRed = this.colorAllRed.bind(this);
+
 
     }
-
-
-
-    colorAllRed() {
-        console.log("Did the thing!")
-        let TempArray = [...this.state.nodeGrid];
-        console.log(TempArray.length);
-        for (let row = 0; row < TempArray.length; row++) {
-            for (let col = 0; col < TempArray.length; col++) {
-                TempArray[row][col].changeDiscoverability("explored");
-            }
-        }
-        console.log(TempArray)
-        this.setState({
-            nodeGrid: TempArray
-        })
-        console.log(this.state.nodeGrid);
-    }
-
 
     changeNodeDiscoverability(nodeRow, nodeCol, newDiscoverabilty) {
         let TempArray = [...this.state.nodeGrid];
@@ -75,10 +55,12 @@ export default class Grid extends Component {
 
         const rowNumber = Math.floor(nodeNumber / 20);
         const colNumber = nodeNumber % 20;
-
         let selectedNode = TempArray[rowNumber][colNumber];
-        // let nodeToChange = TempArray[]
+
         if (this.props.nodeSelector === 0) {
+
+            this.state.startNode.changeDiscoverability('discoverable');
+
             console.log("Changing start node!");
             TempArray[rowNumber][colNumber].changeDiscoverability('explored');
             let newStart = TempArray[rowNumber][colNumber];
@@ -89,6 +71,7 @@ export default class Grid extends Component {
             })
         }
         else if (this.props.nodeSelector === 1) {
+            this.state.targetNode.changeDiscoverability('discoverable');
             console.log("Changing target node!");
             TempArray[rowNumber][colNumber].changeDiscoverability('target');
             let newTarget = TempArray[rowNumber][colNumber];
@@ -96,26 +79,11 @@ export default class Grid extends Component {
             this.setState({
                 targetNode: newTarget,
                 nodeGrid: TempArray
-            })
+            });
         }
 
     }
-    colorRandomNodes() {
-        const discoverabilities = ["explored", "discovered", "path"];
-        let TempArray = [...this.state.nodeGrid];
-        console.log('Did the thing');
-        for (let i = 0; i < 4; i++) {
-            const randRow = getRandomInt(0, 19);
-            const randCol = getRandomInt(0, 19);
-            const randDisc = getRandomInt(0, 2);
-            TempArray[randRow][randCol].changeDiscoverability(discoverabilities[randDisc]);
-        }
 
-        this.setState({
-            nodeGrid: TempArray
-        })
-
-    }
     createGrid(rows, columns) {
         // Initialize grid of nodes
         let newArray2 = []
