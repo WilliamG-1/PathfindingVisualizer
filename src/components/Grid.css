@@ -1,0 +1,46 @@
+#Grid {
+    display: grid;
+    padding: 5px;
+    width: 600px;
+    height: 600px;
+    grid-template: repeat(20, 1fr) / repeat(20, 1fr);
+    /* grid-template: 1fr 1fr 1fr / repeat(3, 1fr); */
+    background-color: black;
+    color: black;
+}
+
+
+.Cell {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    /* color: transparent; */
+}
+
+.path {
+    background-color: aqua;
+    border: 1px solid black;
+}
+
+.discoverable {
+    background-color: rgb(177, 177, 177);
+    border: 1px solid black;
+}
+
+.explored {
+    background-color: red;
+    border: 1px solid black;
+}
+
+.discovered {
+    background-color: lightgreen;
+    border: 1px solid black;
+}
+
+.target {
+    background-color: rgb(5, 107, 147);
+    border: 1px solid black;
+}
