@@ -40,6 +40,11 @@
     border: 1px solid black;
 }
 
+.start {
+    background-color: rgb(141, 4, 88);
+    border: 1px solid black;
+}
+
 .target {
     background-color: rgb(5, 107, 147);
     border: 1px solid black;

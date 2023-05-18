@@ -2,22 +2,10 @@ import { Component } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import './Grid.css'
-import Node from './node'
-import TaskBar from './Taskbar';
-class ANode {
-    constructor(row, column, walkable, discoverability) {
-        this.row = row;
-        this.column = column;
-        this.walkable = walkable;
-        this.discoverability = discoverability;
-        this.fCost = 0;
-        this.gCost = 0;
-    }
-    changeDiscoverability(newDiscoverabilty) {
-        this.discoverability = newDiscoverabilty;
-    }
+import ANode from './ANode';
 
-}
+import TaskBar from './Taskbar';
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
