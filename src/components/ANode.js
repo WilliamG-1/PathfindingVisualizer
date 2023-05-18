@@ -1,4 +1,4 @@
-export default class ANode {
+export default class aNode {
     constructor(row, column, walkable, discoverability) {
         this.row = row;
         this.column = column;

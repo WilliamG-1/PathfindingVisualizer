@@ -87,7 +87,8 @@ export default class Grid extends Component {
     }
 
     displayGrid() {
-        const divsOfDivs = this.state.nodeGrid.map((rowList, rowIndex) => {
+        console.log(this.props.AGrid);
+        const divsOfDivs = this.props.AGrid.map((rowList, rowIndex) => {
             return (rowList.map((N, nodeIndex) => {
                 const classN = `${N.discoverability} Cell`;
 
