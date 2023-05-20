@@ -2,22 +2,10 @@ import { Component } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import './Grid.css'
-import Node from './node'
-import TaskBar from './Taskbar';
-class ANode {
-    constructor(row, column, walkable, discoverability) {
-        this.row = row;
-        this.column = column;
-        this.walkable = walkable;
-        this.discoverability = discoverability;
-        this.fCost = 0;
-        this.gCost = 0;
-    }
-    changeDiscoverability(newDiscoverabilty) {
-        this.discoverability = newDiscoverabilty;
-    }
+import ANode from './ANode';
 
-}
+import TaskBar from './Taskbar';
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -55,32 +43,32 @@ export default class Grid extends Component {
 
         const rowNumber = Math.floor(nodeNumber / 20);
         const colNumber = nodeNumber % 20;
-        let selectedNode = TempArray[rowNumber][colNumber];
+        // let selectedNode = TempArray[rowNumber][colNumber];
 
-        if (this.props.nodeSelector === 0) {
+        // if (this.props.nodeSelector === 0) {
 
-            this.state.startNode.changeDiscoverability('discoverable');
+        //     this.state.startNode.changeDiscoverability('discoverable');
 
-            console.log("Changing start node!");
-            TempArray[rowNumber][colNumber].changeDiscoverability('explored');
-            let newStart = TempArray[rowNumber][colNumber];
+        //     console.log("Changing start node!");
+        //     TempArray[rowNumber][colNumber].changeDiscoverability('explored');
+        //     let newStart = TempArray[rowNumber][colNumber];
 
-            this.setState({
-                startNode: newStart,
-                nodeGrid: TempArray
-            })
-        }
-        else if (this.props.nodeSelector === 1) {
-            this.state.targetNode.changeDiscoverability('discoverable');
-            console.log("Changing target node!");
-            TempArray[rowNumber][colNumber].changeDiscoverability('target');
-            let newTarget = TempArray[rowNumber][colNumber];
+        //     this.setState({
+        //         startNode: newStart,
+        //         nodeGrid: TempArray
+        //     })
+        // }
+        // else if (this.props.nodeSelector === 1) {
+        //     this.state.targetNode.changeDiscoverability('discoverable');
+        //     console.log("Changing target node!");
+        //     TempArray[rowNumber][colNumber].changeDiscoverability('target');
+        //     let newTarget = TempArray[rowNumber][colNumber];
 
-            this.setState({
-                targetNode: newTarget,
-                nodeGrid: TempArray
-            });
-        }
+        //     this.setState({
+        //         targetNode: newTarget,
+        //         nodeGrid: TempArray
+        //     });
+        // }
 
     }
 
@@ -99,12 +87,13 @@ export default class Grid extends Component {
     }
 
     displayGrid() {
-        const divsOfDivs = this.state.nodeGrid.map((rowList, rowIndex) => {
+        //console.log(this.props.AGrid);
+        const divsOfDivs = this.props.AGrid.map((rowList, rowIndex) => {
             return (rowList.map((N, nodeIndex) => {
                 const classN = `${N.discoverability} Cell`;
 
                 // {rowIndex * 20 + nodeIndex} This are the button numbers
-                return (<button key={rowIndex * 20 + nodeIndex} className={classN} onClick={this.chooseNode}>{rowIndex * 20 + nodeIndex} </button>)
+                return (<button key={rowIndex * 20 + nodeIndex} className={classN} onClick={this.props.selectNode}>{rowIndex * 20 + nodeIndex} </button>)
             }))
         })
         return divsOfDivs

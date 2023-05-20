@@ -11,6 +11,8 @@ export default class TaskBar extends Component {
                 <button id="pathfind" onClick={this.props.onFindPath}>Find Path</button>
                 <button id="setstart" onClick={this.props.onSelectStart}>Set Start</button>
                 <button id="settarget" onClick={this.props.onSelectTarget}>Set Target</button>
+                <button id="setbarriers" onClick={this.props.onSelectBarrier}>Set Barriers</button>
+                <button id="seeneighbors" onClick={this.props.onFindNeighbors}>Find Neighbors</button>
             </div>
         )
     }

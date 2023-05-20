@@ -35,8 +35,13 @@
     border: 1px solid black;
 }
 
-.discovered {
+.visited {
     background-color: lightgreen;
+    border: 1px solid black;
+}
+
+.start {
+    background-color: rgb(141, 4, 88);
     border: 1px solid black;
 }
 
