@@ -1,19 +1,99 @@
-export default class AStar {
-    constructor(Grid) {
-        this.grid = Grid;
-        this.open = [];
-        this.closed = {};
+import aGrid from "./AGrid";
+import aNode from "./ANode";
+export default class aStar {
+
+    constructor(AGrid) {
+        this.grid = new aGrid(20, 20);
+        this.grid = AGrid;
     }
 
     updateGrid(newGrid) {
         this.grid = newGrid;
     }
     findPath() {
+        // The open set and closed set, open denoting nodes which are visited, closed are those which are fully explored
+        let open = [];
+        let closed = [];
         // First, add the starting node to the open set
-        this.open.push(this.grid.startNode);
+        open.push(this.grid.startNode);
+        // this.grid.startNode.changeDiscoverability('visited');
+        while (open.length > 0) {
+            let currentNode = open[0]
+            for (let i = 0; i < open.length; i++) {
+                // Check if any node in the current set is a more feasable node than our current node, then update our current node
+                if (open[i].fCost < currentNode.fCost || (open[i].fCost === currentNode.fCost && open[i].hCost < currentNode.hCost)) {
+                    currentNode = open[i];
+                }
+            }
+            // Make node fully explored, remove from open set, then add it to the closed set!
+            currentNode.changeDiscoverability('explored');
+            this.removeNodeFromOpen(open, currentNode);
+            closed.push(currentNode);
 
-        while (this.open.length > 0) {
+            if (currentNode === this.grid.targetNode) {
+                console.log("FOund path!")
+                this.retracePath(this.grid.startNode, this.grid.targetNode);
+                return;
+            }
+            this.grid.getNeighbors(currentNode).forEach(neighbor => {
+                console.log("Testing neigbor!");
+                if (!neighbor.walkable || closed.includes(neighbor)) {
+                    console.log("Nofin~")
+                }
+                else {
+                    console.log("Somefin!")
+                    let distanceFromCurrentToNeighbor = currentNode.gCost + this.getGridDistance(currentNode, neighbor);
+                    // Update f cost, and other if new distance is less than the node's current g cost, or if neighbor is not in open set (not yet visited)
+                    if (distanceFromCurrentToNeighbor < neighbor.gCost || !(open.includes(neighbor))) {
+                        neighbor.updateGCost(distanceFromCurrentToNeighbor);
+                        neighbor.updateHCost(this.getGridDistance(neighbor, this.grid.targetNode));
+                        neighbor.updateParent(currentNode);
+                        // Add to open set if not yet in it
+                        if (!(open.includes[neighbor])) {
+                            open.push(neighbor);
+                            neighbor.changeDiscoverability('visited');
+                            console.log(`Open set size: ${open.length}`)
+                        }
+                    }
+                }
 
+            });
+        }
+    }
+
+    retracePath(startNode, targetNode) {
+
+        let path = []
+        let currentNode = targetNode;
+        while (currentNode != startNode) {
+            console.log("Retracing path!")
+            console.log(`Current Node coorods: ${currentNode.column}, ${currentNode.row}`)
+            path.push(currentNode);
+            currentNode.changeDiscoverability('path');
+            currentNode = currentNode.parent;
+        }
+        path = path.reverse();
+        console.log("New Path:")
+        console.log(path);
+    }
+
+    getGridDistance(nodeA, nodeB) {
+        const distX = Math.abs(nodeA.column - nodeB.column);
+        const distY = Math.abs(nodeA.row - nodeB.row);
+
+        if (distX > distY) {
+            return (14 * distY + 10 * (distX - distY));
+        }
+        else {
+            return (14 * distX + 10 * (distY - distX));
+        }
+    }
+
+    removeNodeFromOpen(open, node) {
+        let index = open.indexOf(node);
+        if (index > -1) {
+            open.splice(index, 1);
+            console.log("Removed something from open set")
         }
     }
 }

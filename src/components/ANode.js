@@ -4,14 +4,29 @@ export default class aNode {
         this.column = column;
         this.walkable = walkable;
         this.discoverability = discoverability;
-        this.fCost = 0;
-        this.hCost = 0;
-    }
-    get fCost() {
-        return this.gCost + this.hCost;
+        this._gCost = 0;
+        this._hCost = 0;
+        this._parent = null;
     }
     changeDiscoverability(newDiscoverabilty) {
         this.discoverability = newDiscoverabilty;
     }
+    updateGCost(newGCost) {
+        this._gCost = newGCost;
+    }
+    updateHCost(newHCost) {
+        this._hCost = newHCost;
+    }
+    updateParent(node) {
+        this._parent = node;
+    }
+    get fCost() {
+        return this._gCost + this._hCost;
+    }
+    get gCost() { return this._gCost; }
+    get hCost() { return this._hCost; }
+    get parent() { return this._parent; }
+
+
 
 }
