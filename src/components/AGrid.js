@@ -28,6 +28,25 @@ export default class aGrid {
         this.setTargetNode(9, 9);
     }
 
+    getNeighbors(Node) {
+        let neighbors = []
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (x === 0 && y === 0)
+                    continue
+                const gridX = x + Node.column
+                const gridY = y + Node.row
+                // Check that the neighbors are valid (inside the grid)
+                if (gridX >= 0 && gridX <= 19 && gridY >= 0 && gridY <= 19) {
+                    neighbors.push(this.nodes[gridY][gridX]);
+                }
+            }
+        }
+        neighbors.forEach(neighbor => {
+            neighbor.changeDiscoverability('visited')
+        })
+        return neighbors
+    }
 
     setStartNode(row, column) {
         if (this.startNode) {

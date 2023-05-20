@@ -6,8 +6,9 @@ export default class aNode {
         this.discoverability = discoverability;
         this.fCost = 0;
         this.hCost = 0;
-        this.gCost = 0;
-
+    }
+    get fCost() {
+        return this.gCost + this.hCost;
     }
     changeDiscoverability(newDiscoverabilty) {
         this.discoverability = newDiscoverabilty;
