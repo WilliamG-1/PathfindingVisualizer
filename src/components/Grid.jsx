@@ -43,32 +43,32 @@ export default class Grid extends Component {
 
         const rowNumber = Math.floor(nodeNumber / 20);
         const colNumber = nodeNumber % 20;
-        let selectedNode = TempArray[rowNumber][colNumber];
+        // let selectedNode = TempArray[rowNumber][colNumber];
 
-        if (this.props.nodeSelector === 0) {
+        // if (this.props.nodeSelector === 0) {
 
-            this.state.startNode.changeDiscoverability('discoverable');
+        //     this.state.startNode.changeDiscoverability('discoverable');
 
-            console.log("Changing start node!");
-            TempArray[rowNumber][colNumber].changeDiscoverability('explored');
-            let newStart = TempArray[rowNumber][colNumber];
+        //     console.log("Changing start node!");
+        //     TempArray[rowNumber][colNumber].changeDiscoverability('explored');
+        //     let newStart = TempArray[rowNumber][colNumber];
 
-            this.setState({
-                startNode: newStart,
-                nodeGrid: TempArray
-            })
-        }
-        else if (this.props.nodeSelector === 1) {
-            this.state.targetNode.changeDiscoverability('discoverable');
-            console.log("Changing target node!");
-            TempArray[rowNumber][colNumber].changeDiscoverability('target');
-            let newTarget = TempArray[rowNumber][colNumber];
+        //     this.setState({
+        //         startNode: newStart,
+        //         nodeGrid: TempArray
+        //     })
+        // }
+        // else if (this.props.nodeSelector === 1) {
+        //     this.state.targetNode.changeDiscoverability('discoverable');
+        //     console.log("Changing target node!");
+        //     TempArray[rowNumber][colNumber].changeDiscoverability('target');
+        //     let newTarget = TempArray[rowNumber][colNumber];
 
-            this.setState({
-                targetNode: newTarget,
-                nodeGrid: TempArray
-            });
-        }
+        //     this.setState({
+        //         targetNode: newTarget,
+        //         nodeGrid: TempArray
+        //     });
+        // }
 
     }
 
@@ -87,13 +87,13 @@ export default class Grid extends Component {
     }
 
     displayGrid() {
-        console.log(this.props.AGrid);
+        //console.log(this.props.AGrid);
         const divsOfDivs = this.props.AGrid.map((rowList, rowIndex) => {
             return (rowList.map((N, nodeIndex) => {
                 const classN = `${N.discoverability} Cell`;
 
                 // {rowIndex * 20 + nodeIndex} This are the button numbers
-                return (<button key={rowIndex * 20 + nodeIndex} className={classN} onClick={this.chooseNode}>{rowIndex * 20 + nodeIndex} </button>)
+                return (<button key={rowIndex * 20 + nodeIndex} className={classN} onClick={this.props.selectNode}>{rowIndex * 20 + nodeIndex} </button>)
             }))
         })
         return divsOfDivs
