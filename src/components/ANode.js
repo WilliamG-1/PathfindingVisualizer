@@ -8,6 +8,24 @@ export default class aNode {
         this._hCost = 0;
         this._parent = null;
     }
+    reset() {
+        this.walkable = true;
+        this.discoverability = 'discoverable';
+        this._gCost = 0;
+        this._hCost = 0;
+        this._parent = null;
+    }
+    clearPath() {
+        this.discoverability = 'discoverable';
+        this._gCost = 0;
+        this._hCost = 0;
+        this._parent = null;
+    }
+    toggleWalkable() {
+        this.walkable = !this.walkable;
+        const newDiscoverability = this.walkable ? "discoverable" : "barrier"
+        this.changeDiscoverability(newDiscoverability);
+    }
     changeDiscoverability(newDiscoverabilty) {
         this.discoverability = newDiscoverabilty;
     }

@@ -11,6 +11,8 @@ export default class aStar {
         this.grid = newGrid;
     }
     findPath() {
+        // First reset grid to reset any previous paths
+        this.grid.clearPreviousPath();
         // The open set and closed set, open denoting nodes which are visited, closed are those which are fully explored
         let open = [];
         let closed = [];
@@ -65,13 +67,17 @@ export default class aStar {
 
         let path = []
         let currentNode = targetNode;
+        currentNode.changeDiscoverability('target');
         while (currentNode != startNode) {
             console.log("Retracing path!")
             console.log(`Current Node coorods: ${currentNode.column}, ${currentNode.row}`)
             path.push(currentNode);
-            currentNode.changeDiscoverability('path');
+            if (currentNode !== targetNode)
+                currentNode.changeDiscoverability('path');
             currentNode = currentNode.parent;
         }
+        // Since the loop breaks on the start node, we also change it's discoverability to path
+        currentNode.changeDiscoverability('start');
         path = path.reverse();
         console.log("New Path:")
         console.log(path);

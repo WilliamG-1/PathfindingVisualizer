@@ -11,6 +11,7 @@ class App extends Component {
 
     this.state = {
       rerender: false,
+      mouseDown: false,
       // 0 means the start node is being selected, 1 means target node, 2 means select barriers, 3 means get neighbors
       nodeSelector: 0,
       AGrid: new aGrid(20, 20),
@@ -34,26 +35,48 @@ class App extends Component {
 
     const rowNumber = Math.floor(buttonNumber / 20);
     const colNumber = buttonNumber % 20;
+
+
+    // We set state to rerender the components lol
+    // Select Start Mode
     if (this.state.nodeSelector === 0) {
       this.state.AGrid.setStartNode(rowNumber, colNumber);
       this.setState({
         nodeSelector: 0
       })
     }
+    // Select Target Mode
     else if (this.state.nodeSelector === 1) {
       this.state.AGrid.setTargetNode(rowNumber, colNumber);
       this.setState({
         nodeSelector: 1
       })
     }
-    else if (this.state.nodeSelector === 3) {
-      const centerNode = this.state.AGrid.nodes[rowNumber][colNumber];
-      const neighbors = this.state.AGrid.getNeighbors(centerNode);
-      this.setState({ nodeSelector: 3 });
+    // Select Barrier Mode
+    else if (this.state.nodeSelector === 2) {
+      this.state.AGrid.toggleBarriers(rowNumber, colNumber);
+
+      this.setState({
+        nodeSelector: 2,
+        mouseDown: true
+      })
     }
 
-  }
+    // // This is temporary for testing lol
+    // else if (this.state.nodeSelector === 3) {
+    //   const centerNode = this.state.AGrid.nodes[rowNumber][colNumber];
+    //   const neighbors = this.state.AGrid.getNeighbors(centerNode);
+    //   this.setState({ nodeSelector: 3 });
+    // }
 
+
+  }
+  handleSelectBarriers = (e) => {
+    console.log("You are now selecting barriers!");
+    this.setState({
+      nodeSelector: 2
+    })
+  }
   handleSelectTarget = (e) => {
     console.log("You are now selecting a target node")
     this.setState({
@@ -69,7 +92,10 @@ class App extends Component {
   handleSelectNeighbors = (e) => {
     this.setState({ nodeSelector: 3 })
   }
-
+  handleReset = (e) => {
+    this.state.AGrid.resetGrid();
+    this.setState({});
+  }
   handleFindPath = (e) => {
     //const NewStar = new aStar(this.state.AGrid);
     //console.log(NewStar);
@@ -80,13 +106,30 @@ class App extends Component {
     this.setState({ rerender: true });
     this.state.AStar.findPath();
     this.setState({ rerender: false });
-
   }
+  handleDragToggleBarriers = (e) => {
+    e.preventDefault();
+    console.log("Dragging!")
+    if (mouseDown && this.state.nodeSelector === 2) {
+      // Gets the button's number
+      const buttonNumber = parseInt(e.target.textContent);
+      //let TempArray = [...this.state.nodeGrid];
+
+      const rowNumber = Math.floor(buttonNumber / 20);
+      const colNumber = buttonNumber % 20;
+
+      this.state.AGrid.toggleBarriers(rowNumber, colNumber);
+      this.setState({});
+    }
+  }
+
+
   render() {
     return (
       <div>
-        <Grid nodeSelector={this.state.nodeSelector} AGrid={this.state.AGrid.grid} selectNode={this.handleSelectNode} />
-        <TaskBar onSelectStart={this.handleSelectStart} onSelectTarget={this.handleSelectTarget} onFindNeighbors={this.handleSelectNeighbors} onFindPath={this.handleFindPath} />
+        <Grid nodeSelector={this.state.nodeSelector} AGrid={this.state.AGrid.grid} selectNode={this.handleSelectNode} dragCreateBarriers={this.handleDragToggleBarriers} />
+        <TaskBar onSelectStart={this.handleSelectStart} onSelectTarget={this.handleSelectTarget} onSelectBarrier={this.handleSelectBarriers} onResetGrid={this.handleReset} onFindPath={this.handleFindPath}
+        />
       </div>
     )
   }

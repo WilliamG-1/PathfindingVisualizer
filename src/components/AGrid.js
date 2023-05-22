@@ -37,7 +37,7 @@ export default class aGrid {
                 const gridX = x + Node.column
                 const gridY = y + Node.row
                 // Check that the neighbors are valid (inside the grid)
-                if (gridX >= 0 && gridX <= 19 && gridY >= 0 && gridY <= 19) {
+                if (gridX >= 0 && gridX <= 19 && gridY >= 0 && gridY <= 19 && this.nodes[gridY][gridX].walkable === true) {
                     neighbors.push(this.nodes[gridY][gridX]);
                 }
             }
@@ -47,6 +47,26 @@ export default class aGrid {
         })
         return neighbors
     }
+
+    resetGrid() {
+        this.nodes.forEach((row) => {
+            row.forEach(node => {
+                node.reset();
+            });
+        })
+        this.setStartNode(0, 0);
+        this.setTargetNode(9, 9);
+    }
+    clearPreviousPath() {
+        this.nodes.forEach(row => {
+            row.forEach(node => {
+                if (node.walkable === true && node !== this.startNode && node != this.targetNode) {
+                    node.reset();
+                }
+            })
+        })
+    }
+
 
     setStartNode(row, column) {
         if (this.startNode) {
@@ -61,6 +81,15 @@ export default class aGrid {
         }
         this.nodes[row][column].changeDiscoverability('target');
         this.targetNode = this.nodes[row][column]
+    }
+    toggleBarriers(row, column) {
+        // Do nothing if trying to make the target/start node a barrier
+        if (this.nodes[row][column] === this.targetNode || this.nodes[row][column] === this.startNode) {
+            return;
+        }
+        else {
+            this.nodes[row][column].toggleWalkable();
+        }
     }
     get grid() {
         return this.nodes;
