@@ -1,5 +1,6 @@
 import aNode from "./ANode";
 
+
 export default class aGrid {
     constructor(rows, columns) {
 

@@ -20,7 +20,7 @@ class App extends Component {
       AStar: new aStar(null)
     }
 
-    this.state.AStar = new aStar(this.state.AGrid);
+    this.state.AStar = new aStar(this.state.AGrid, this.handleUpdateGrid);
     this.mouseEventer = new MouseEventer(this.state.AGrid.nodes);
   }
   handleSelectNode = (e) => {
@@ -89,14 +89,16 @@ class App extends Component {
     console.log(this.state.AStar);
     this.setState({ rerender: true });
     this.state.AStar.findPath();
-    this.setState({ rerender: false });
   }
   handleDragToggleBarriers = (e) => {
     e.stopPropagation();
     this.mouseEventer.dragButtons(e);
     this.setState({});
   }
-
+  handleUpdateGrid = () => {
+    console.log("Resetting state!")
+    this.setState({});
+  }
 
   render() {
     return (
