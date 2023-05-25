@@ -6,6 +6,7 @@ export default class MouseEventer {
         this.nodes = nodesArray;
         this.mouseDown = false;
         this.buttonsAlreadyDraggedOver = [];
+        this.shouldSetBarriers = false;
     }
 
     mousePressed = (e) => {
@@ -16,17 +17,23 @@ export default class MouseEventer {
         // Reset buttons that have already been dragged over!
         this.buttonsAlreadyDraggedOver = [];
     }
+    setShouldSetBarriers(boolean) {
+        this.shouldSetBarriers = boolean;
+    }
+
     dragButtons = (e) => {
         e.preventDefault();
-
-        if (this.mouseDown) {
-            const btnNumber = parseint(e.target.textContent);
+        console.log("Dragging!")
+        if (this.mouseDown && this.shouldSetBarriers) {
+            console.log("you're doing something right!")
+            const btnNumber = parseInt(e.target.textContent);
             if (!this.buttonsAlreadyDraggedOver.includes(btnNumber)) {
                 this.buttonsAlreadyDraggedOver.push(btnNumber);
 
                 const rowNumber = Math.floor(btnNumber / 20);
                 const colNumber = btnNumber % 20;
                 this.nodes[rowNumber][colNumber].toggleWalkable();
+                console.log("New barrier!");
             }
         }
 

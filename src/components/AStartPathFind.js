@@ -19,48 +19,51 @@ export default class aStar {
         // First, add the starting node to the open set
         open.push(this.grid.startNode);
         // this.grid.startNode.changeDiscoverability('visited');
-        while (open.length > 0) {
-            let currentNode = open[0]
-            for (let i = 0; i < open.length; i++) {
-                // Check if any node in the current set is a more feasable node than our current node, then update our current node
-                if (open[i].fCost < currentNode.fCost || (open[i].fCost === currentNode.fCost && open[i].hCost < currentNode.hCost)) {
-                    currentNode = open[i];
-                }
-            }
-            // Make node fully explored, remove from open set, then add it to the closed set!
-            currentNode.changeDiscoverability('explored');
-            this.removeNodeFromOpen(open, currentNode);
-            closed.push(currentNode);
-
-            if (currentNode === this.grid.targetNode) {
-                console.log("FOund path!")
-                this.retracePath(this.grid.startNode, this.grid.targetNode);
-                return;
-            }
-            this.grid.getNeighbors(currentNode).forEach(neighbor => {
-                console.log("Testing neigbor!");
-                if (!neighbor.walkable || closed.includes(neighbor)) {
-                    console.log("Nofin~")
-                }
-                else {
-                    console.log("Somefin!")
-                    let distanceFromCurrentToNeighbor = currentNode.gCost + this.getGridDistance(currentNode, neighbor);
-                    // Update f cost, and other if new distance is less than the node's current g cost, or if neighbor is not in open set (not yet visited)
-                    if (distanceFromCurrentToNeighbor < neighbor.gCost || !(open.includes(neighbor))) {
-                        neighbor.updateGCost(distanceFromCurrentToNeighbor);
-                        neighbor.updateHCost(this.getGridDistance(neighbor, this.grid.targetNode));
-                        neighbor.updateParent(currentNode);
-                        // Add to open set if not yet in it
-                        if (!(open.includes[neighbor])) {
-                            open.push(neighbor);
-                            neighbor.changeDiscoverability('visited');
-                            console.log(`Open set size: ${open.length}`)
-                        }
+        setTimeout(() => {
+            while (open.length > 0) {
+                let currentNode = open[0]
+                for (let i = 0; i < open.length; i++) {
+                    // Check if any node in the current set is a more feasable node than our current node, then update our current node
+                    if (open[i].fCost < currentNode.fCost || (open[i].fCost === currentNode.fCost && open[i].hCost < currentNode.hCost)) {
+                        currentNode = open[i];
                     }
                 }
+                // Make node fully explored, remove from open set, then add it to the closed set!
+                currentNode.changeDiscoverability('explored');
+                this.removeNodeFromOpen(open, currentNode);
+                closed.push(currentNode);
 
-            });
-        }
+                if (currentNode === this.grid.targetNode) {
+                    console.log("FOund path!")
+                    this.retracePath(this.grid.startNode, this.grid.targetNode);
+                    return;
+                }
+                this.grid.getNeighbors(currentNode).forEach(neighbor => {
+                    console.log("Testing neigbor!");
+                    if (!neighbor.walkable || closed.includes(neighbor)) {
+                        console.log("Nofin~")
+                    }
+                    else {
+                        console.log("Somefin!")
+                        let distanceFromCurrentToNeighbor = currentNode.gCost + this.getGridDistance(currentNode, neighbor);
+                        // Update f cost, and other if new distance is less than the node's current g cost, or if neighbor is not in open set (not yet visited)
+                        if (distanceFromCurrentToNeighbor < neighbor.gCost || !(open.includes(neighbor))) {
+                            neighbor.updateGCost(distanceFromCurrentToNeighbor);
+                            neighbor.updateHCost(this.getGridDistance(neighbor, this.grid.targetNode));
+                            neighbor.updateParent(currentNode);
+                            // Add to open set if not yet in it
+                            if (!(open.includes[neighbor])) {
+                                open.push(neighbor);
+                                neighbor.changeDiscoverability('visited');
+                                console.log(`Open set size: ${open.length}`)
+                            }
+                        }
+                    }
+
+                });
+                console.log("Hi")
+            }
+        }, 200);
     }
 
     retracePath(startNode, targetNode) {

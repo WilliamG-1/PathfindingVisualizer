@@ -28,7 +28,8 @@ export default class Grid extends Component {
                 const classN = `${N.discoverability} Cell`;
 
                 // {rowIndex * 20 + nodeIndex} This are the button numbers
-                return (<button key={rowIndex * 20 + nodeIndex} className={classN} onClick={this.props.selectNode} onDrag={this.props.dragCreateBarriers}>{rowIndex * 20 + nodeIndex} </button>)
+                return (<button key={rowIndex * 20 + nodeIndex} className={classN} onClick={this.props.selectNode} onPointerOver={this.props.dragCreateBarriers}
+                    onMouseDown={this.props.handleMouseDown} onMouseUp={this.props.handleMouseUp}>{rowIndex * 20 + nodeIndex} </button>)
             }))
         })
         return divsOfDivs

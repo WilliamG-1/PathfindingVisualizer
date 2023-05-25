@@ -5,6 +5,8 @@ import './App.css'
 import aGrid from './components/AGrid'
 import aNode from './components/ANode'
 import aStar from './components/AStartPathfind'
+import MouseEventer from './components/MouseFunctionality'
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,17 +19,10 @@ class App extends Component {
       AGrid: new aGrid(20, 20),
       AStar: new aStar(null)
     }
+
     this.state.AStar = new aStar(this.state.AGrid);
+    this.mouseEventer = new MouseEventer(this.state.AGrid.nodes);
   }
-
-  // handleFindNeighbors = (e) => {
-  //   // Gets the button's number
-  //   const buttonNumber = parseInt(e.target.textContent);
-  //   const rowNumber = Math.floor(nodeNumber / 20);
-  //   const colNumber = nodeNumber % 20;
-
-  // }
-
   handleSelectNode = (e) => {
     // Gets the button's number
     const buttonNumber = parseInt(e.target.textContent);
@@ -61,44 +56,33 @@ class App extends Component {
         mouseDown: true
       })
     }
-
-    // // This is temporary for testing lol
-    // else if (this.state.nodeSelector === 3) {
-    //   const centerNode = this.state.AGrid.nodes[rowNumber][colNumber];
-    //   const neighbors = this.state.AGrid.getNeighbors(centerNode);
-    //   this.setState({ nodeSelector: 3 });
-    // }
-
-
   }
   handleSelectBarriers = (e) => {
     console.log("You are now selecting barriers!");
     this.setState({
       nodeSelector: 2
     })
+    this.mouseEventer.setShouldSetBarriers(true);
   }
   handleSelectTarget = (e) => {
     console.log("You are now selecting a target node")
     this.setState({
       nodeSelector: 1
     })
+    this.mouseEventer.setShouldSetBarriers(false);
   }
   handleSelectStart = (e) => {
     console.log("Changed to selecting the start node!")
     this.setState({
       nodeSelector: 0
     })
-  }
-  handleSelectNeighbors = (e) => {
-    this.setState({ nodeSelector: 3 })
+    this.mouseEventer.setShouldSetBarriers(false);
   }
   handleReset = (e) => {
     this.state.AGrid.resetGrid();
     this.setState({});
   }
   handleFindPath = (e) => {
-    //const NewStar = new aStar(this.state.AGrid);
-    //console.log(NewStar);
     console.log("Finding path in sjc!")
     console.log(this.state.AGrid)
     console.log("Get the grid!");
@@ -108,26 +92,17 @@ class App extends Component {
     this.setState({ rerender: false });
   }
   handleDragToggleBarriers = (e) => {
-    e.preventDefault();
-    console.log("Dragging!")
-    if (mouseDown && this.state.nodeSelector === 2) {
-      // Gets the button's number
-      const buttonNumber = parseInt(e.target.textContent);
-      //let TempArray = [...this.state.nodeGrid];
-
-      const rowNumber = Math.floor(buttonNumber / 20);
-      const colNumber = buttonNumber % 20;
-
-      this.state.AGrid.toggleBarriers(rowNumber, colNumber);
-      this.setState({});
-    }
+    e.stopPropagation();
+    this.mouseEventer.dragButtons(e);
+    this.setState({});
   }
 
 
   render() {
     return (
-      <div>
-        <Grid nodeSelector={this.state.nodeSelector} AGrid={this.state.AGrid.grid} selectNode={this.handleSelectNode} dragCreateBarriers={this.handleDragToggleBarriers} />
+      <div onPointerOver={this.mouseEventer.mouseLifted}>
+        <Grid nodeSelector={this.state.nodeSelector} AGrid={this.state.AGrid.grid} selectNode={this.handleSelectNode} dragCreateBarriers={this.handleDragToggleBarriers}
+          handleMouseDown={this.mouseEventer.mousePressed} handleMouseUp={this.mouseEventer.mouseLifted} />
         <TaskBar onSelectStart={this.handleSelectStart} onSelectTarget={this.handleSelectTarget} onSelectBarrier={this.handleSelectBarriers} onResetGrid={this.handleReset} onFindPath={this.handleFindPath}
         />
       </div>
