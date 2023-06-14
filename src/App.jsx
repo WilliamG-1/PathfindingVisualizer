@@ -3,7 +3,7 @@ import Grid from './components/Grid'
 import TaskBar from './components/Taskbar'
 import './App.css'
 import aGrid from './components/AGrid'
-import aStar from './components/AStartPathfind'
+import aStar from './components/AStartPathFind'
 import MouseEventer from './components/MouseFunctionality'
 
 class App extends Component {
