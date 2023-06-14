@@ -1,6 +1,4 @@
 import aGrid from "./AGrid";
-import aNode from "./ANode";
-import React from "react";
 
 
 export default class aStar {
